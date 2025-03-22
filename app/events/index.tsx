@@ -7,6 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 import {
   Plus,
   Search,
@@ -97,7 +98,7 @@ export default function EventsScreen() {
     return (
       <TouchableOpacity
         className="bg-white p-4 rounded-lg mb-3 shadow-sm border border-gray-100"
-        onPress={() => console.log(`View event ${item.id}`)}
+        onPress={() => router.push(`/events/view?id=${item.id}`)}
       >
         <View className="flex-row justify-between items-start">
           <View className="flex-1">
@@ -152,7 +153,10 @@ export default function EventsScreen() {
               <Filter size={20} color="#4B5563" />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity className="bg-blue-500 px-3 py-2 rounded-lg flex-row items-center">
+          <TouchableOpacity
+            className="bg-blue-500 px-3 py-2 rounded-lg flex-row items-center"
+            onPress={() => router.push("/events/add")}
+          >
             <Plus size={18} color="#FFFFFF" />
             <Text className="text-white font-medium ml-1">Add Event</Text>
           </TouchableOpacity>

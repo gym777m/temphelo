@@ -64,7 +64,7 @@ export default function ActivityLogsScreen() {
       action: "Payment Received",
       user: "Alex Johnson",
       timestamp: "Yesterday, 4:20 PM",
-      details: "Received payment of $850 for invoice #INV-2023-003",
+      details: "Received payment of ₹850 for invoice #INV-2023-003",
       type: "invoice",
     },
     {
@@ -124,7 +124,28 @@ export default function ActivityLogsScreen() {
     return (
       <TouchableOpacity
         className="bg-white p-4 rounded-lg mb-3 shadow-sm border border-gray-100"
-        onPress={() => console.log(`View log ${item.id}`)}
+        onPress={() => {
+          // Navigate based on log type
+          switch (item.type) {
+            case "product":
+              router.push(`/products/view?id=${item.id}`);
+              break;
+            case "customer":
+              router.push(`/customers/view?id=${item.id}`);
+              break;
+            case "order":
+              router.push(`/orders/view?id=${item.id}`);
+              break;
+            case "invoice":
+              router.push(`/finances/invoice-details?id=${item.id}`);
+              break;
+            case "event":
+              router.push(`/events/view?id=${item.id}`);
+              break;
+            default:
+              console.log(`View log ${item.id}`);
+          }
+        }}
       >
         <View className="flex-row items-start">
           <View className="mr-3 mt-1">{getIconForLogType(item.type)}</View>

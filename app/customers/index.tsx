@@ -7,6 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 import {
   Plus,
   Search,
@@ -78,7 +79,7 @@ export default function CustomersScreen() {
     return (
       <TouchableOpacity
         className="bg-white p-4 rounded-lg mb-3 shadow-sm border border-gray-100"
-        onPress={() => console.log(`View customer ${item.id}`)}
+        onPress={() => router.push(`/customers/view?id=${item.id}`)}
       >
         <View className="flex-row justify-between items-start">
           <View className="flex-1">
@@ -110,9 +111,8 @@ export default function CustomersScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       <Header title="Customers" />
-
       <View className="flex-1 px-4 pt-4">
-        <View className="flex-row justify-between items-center mb-4">
+        <View className="flex-row justify-between items-center mb-4 animate-none">
           <View className="flex-row">
             <TouchableOpacity className="bg-white p-2 rounded-lg mr-2 shadow-sm">
               <Search size={20} color="#4B5563" />
@@ -121,7 +121,10 @@ export default function CustomersScreen() {
               <Filter size={20} color="#4B5563" />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity className="bg-blue-500 px-3 py-2 rounded-lg flex-row items-center">
+          <TouchableOpacity
+            className="px-3 py-2 rounded-lg flex-row items-center bg-[#4489f0]"
+            onPress={() => router.push("/customers/add")}
+          >
             <Plus size={18} color="#FFFFFF" />
             <Text className="text-white font-medium ml-1">Add Customer</Text>
           </TouchableOpacity>
@@ -135,7 +138,6 @@ export default function CustomersScreen() {
           contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}
         />
       </View>
-
       <View className="absolute bottom-0 left-0 right-0">
         <BottomNavigation activeTab="customers" />
       </View>

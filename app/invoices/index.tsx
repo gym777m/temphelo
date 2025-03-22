@@ -5,8 +5,10 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
+  TextInput,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 import {
   PlusCircle,
   Search,
@@ -36,6 +38,7 @@ interface InvoiceItem {
 
 export default function InvoicesScreen() {
   const insets = useSafeAreaInsets();
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const mockInvoices: InvoiceItem[] = [
     {
@@ -103,13 +106,25 @@ export default function InvoicesScreen() {
     }
   };
 
+  const filteredInvoices = searchQuery
+    ? mockInvoices.filter(
+        (invoice) =>
+          invoice.invoiceNumber
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          invoice.customerName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()),
+      )
+    : mockInvoices;
+
   const renderInvoiceItem = ({ item }: { item: InvoiceItem }) => {
     const statusColor = getStatusColor(item.status);
 
     return (
       <TouchableOpacity
         className="bg-white p-4 rounded-lg mb-3 shadow-sm border border-gray-100"
-        onPress={() => console.log(`View invoice ${item.id}`)}
+        onPress={() => router.push(`/finances/invoice-details?id=${item.id}`)}
       >
         <View className="flex-row justify-between items-start">
           <View className="flex-1">
@@ -134,17 +149,29 @@ export default function InvoicesScreen() {
               <Text className="text-xs font-medium">{item.status}</Text>
             </View>
             <Text className="font-semibold">
-              ${item.amount.toLocaleString()}
+              ₹{item.amount.toLocaleString()}
             </Text>
             <Text className="text-xs text-gray-500">{item.type}</Text>
           </View>
         </View>
         <View className="flex-row justify-end mt-3 pt-2 border-t border-gray-100">
-          <TouchableOpacity className="flex-row items-center mr-3">
+          <TouchableOpacity
+            className="flex-row items-center mr-3"
+            onPress={() =>
+              router.push(`/finances/invoice-details?id=${item.id}`)
+            }
+          >
             <FileText size={14} color="#3B82F6" />
             <Text className="text-blue-600 text-sm ml-1">View</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row items-center">
+          <TouchableOpacity
+            className="flex-row items-center"
+            onPress={() => {
+              console.log(`Downloading PDF for invoice ${item.id}`);
+              // In a real app, you would generate and download a PDF
+              alert(`Invoice #${item.invoiceNumber} PDF is being generated`);
+            }}
+          >
             <Download size={14} color="#10B981" />
             <Text className="text-green-600 text-sm ml-1">Download PDF</Text>
           </TouchableOpacity>
@@ -159,15 +186,29 @@ export default function InvoicesScreen() {
 
       <View className="flex-1 px-4 pt-4">
         <View className="flex-row justify-between items-center mb-4">
-          <View className="flex-row">
-            <TouchableOpacity className="bg-white p-2.5 rounded-xl mr-3 shadow-sm">
-              <Search size={20} color="#6366f1" strokeWidth={2} />
-            </TouchableOpacity>
-            <TouchableOpacity className="bg-white p-2.5 rounded-xl shadow-sm">
+          <View className="flex-row flex-1 mr-3">
+            <View className="flex-1 bg-white rounded-xl shadow-sm flex-row items-center px-3">
+              <Search size={18} color="#6366f1" strokeWidth={2} />
+              <TextInput
+                className="flex-1 py-2.5 px-2"
+                placeholder="Search invoices..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+              />
+              {searchQuery ? (
+                <TouchableOpacity onPress={() => setSearchQuery("")}>
+                  <Text className="text-gray-400 font-medium">✕</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            <TouchableOpacity className="bg-white p-2.5 rounded-xl shadow-sm ml-2">
               <SlidersHorizontal size={20} color="#6366f1" strokeWidth={2} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 rounded-xl flex-row items-center shadow-md">
+          <TouchableOpacity
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 rounded-xl flex-row items-center shadow-md"
+            onPress={() => router.push("/invoices/create")}
+          >
             <PlusCircle size={18} color="#FFFFFF" />
             <Text className="text-white font-medium ml-2">Create Invoice</Text>
           </TouchableOpacity>
@@ -176,24 +217,29 @@ export default function InvoicesScreen() {
         <View className="flex-row justify-between mb-5">
           <View className="bg-white p-3.5 rounded-xl flex-1 mr-2 items-center shadow-sm">
             <Text className="text-gray-600 text-sm font-medium">Total</Text>
-            <Text className="text-lg font-bold text-gray-900">$10,100</Text>
+            <Text className="text-lg font-bold text-gray-900">₹10,100</Text>
           </View>
           <View className="bg-white p-3.5 rounded-xl flex-1 mr-2 items-center shadow-sm">
             <Text className="text-gray-600 text-sm font-medium">Paid</Text>
-            <Text className="text-lg font-bold text-emerald-600">$3,350</Text>
+            <Text className="text-lg font-bold text-emerald-600">₹3,350</Text>
           </View>
           <View className="bg-white p-3.5 rounded-xl flex-1 items-center shadow-sm">
             <Text className="text-gray-600 text-sm font-medium">Pending</Text>
-            <Text className="text-lg font-bold text-amber-600">$6,750</Text>
+            <Text className="text-lg font-bold text-amber-600">₹6,750</Text>
           </View>
         </View>
 
         <FlatList
-          data={mockInvoices}
+          data={filteredInvoices}
           renderItem={renderInvoiceItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}
+          ListEmptyComponent={
+            <View className="py-10 items-center">
+              <Text className="text-gray-500">No invoices found</Text>
+            </View>
+          }
         />
       </View>
 

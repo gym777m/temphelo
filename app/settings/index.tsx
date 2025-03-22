@@ -98,7 +98,7 @@ export default function SettingsScreen() {
             icon={<User size={20} color="#4B5563" />}
             title="Personal Information"
             subtitle="Update your personal details"
-            onPress={() => console.log("Personal Information pressed")}
+            onPress={() => router.push("/settings/personal-information")}
           />
           <SettingsItem
             icon={<Bell size={20} color="#4B5563" />}
@@ -117,7 +117,7 @@ export default function SettingsScreen() {
             icon={<Shield size={20} color="#4B5563" />}
             title="Security"
             subtitle="Change password and security settings"
-            onPress={() => console.log("Security pressed")}
+            onPress={() => router.push("/settings/security")}
             isLast
           />
         </SettingsSection>
@@ -128,19 +128,19 @@ export default function SettingsScreen() {
             icon={<Building size={20} color="#4B5563" />}
             title="Company Information"
             subtitle="Update your business details"
-            onPress={() => console.log("Company Information pressed")}
+            onPress={() => router.push("/settings/company-information")}
           />
           <SettingsItem
             icon={<User size={20} color="#4B5563" />}
             title="Employee Management"
             subtitle="Manage staff and permissions"
-            onPress={() => console.log("Employee Management pressed")}
+            onPress={() => router.push("/settings/employee-management")}
           />
           <SettingsItem
             icon={<Database size={20} color="#4B5563" />}
             title="Data Backup"
             subtitle="Backup and restore your data"
-            onPress={() => console.log("Data Backup pressed")}
+            onPress={() => router.push("/settings/data-backup")}
             isLast
           />
         </SettingsSection>
@@ -151,7 +151,7 @@ export default function SettingsScreen() {
             icon={<HelpCircle size={20} color="#4B5563" />}
             title="Help & Support"
             subtitle="Get help with using the app"
-            onPress={() => console.log("Help & Support pressed")}
+            onPress={() => router.push("/settings/help-support")}
             isLast
           />
         </SettingsSection>

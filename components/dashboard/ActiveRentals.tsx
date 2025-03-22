@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Calendar, Clock, User } from "lucide-react-native";
+import { router } from "expo-router";
 
 interface RentalItem {
   id: string;
@@ -46,13 +47,15 @@ const ActiveRentals = ({
       daysRemaining: 8,
     },
   ],
-  onViewRental = (id) => console.log(`View rental ${id}`),
+  onViewRental = (id) => {
+    router.push(`/orders/view?id=${id}`);
+  },
 }: ActiveRentalsProps) => {
   return (
     <View className="bg-white p-4 rounded-lg shadow-sm">
       <View className="flex-row justify-between items-center mb-3">
         <Text className="text-lg font-bold">Active Rentals</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/orders")}>
           <Text className="text-blue-500">View All</Text>
         </TouchableOpacity>
       </View>

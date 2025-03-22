@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -13,6 +13,16 @@ import BottomNavigation from "../components/navigation/BottomNavigation";
 
 export default function DashboardScreen() {
   const insets = useSafeAreaInsets();
+
+  // Add error handling script for Tempo
+  useEffect(() => {
+    if (typeof document !== "undefined" && process.env.EXPO_PUBLIC_TEMPO) {
+      const script = document.createElement("script");
+      script.src =
+        "https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/error-handling.js";
+      document.head.appendChild(script);
+    }
+  }, []);
 
   // Mock handlers for component interactions
   const handleNotificationPress = () => {

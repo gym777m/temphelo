@@ -126,7 +126,7 @@ export default function TransactionDetailsScreen() {
               <Text
                 className={`text-center text-2xl font-bold ${transaction.type === "income" ? "text-green-600" : "text-red-600"}`}
               >
-                {transaction.type === "income" ? "+" : "-"}$
+                {transaction.type === "income" ? "+" : "-"}₹
                 {transaction.amount.toLocaleString()}
               </Text>
             </View>

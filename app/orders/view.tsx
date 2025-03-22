@@ -213,12 +213,12 @@ export default function OrderViewScreen() {
                 <View className="ml-2">
                   <Text className="text-gray-900">{item.name}</Text>
                   <Text className="text-gray-500 text-sm">
-                    Qty: {item.quantity} × ${item.pricePerDay}/day
+                    Qty: {item.quantity} × ₹{item.pricePerDay}/day
                   </Text>
                 </View>
               </View>
               <Text className="font-medium">
-                ${item.quantity * item.pricePerDay * 5}
+                ₹{item.quantity * item.pricePerDay * 5}
               </Text>
             </View>
           ))}
@@ -227,16 +227,16 @@ export default function OrderViewScreen() {
             <View className="flex-row justify-between mb-1">
               <Text className="text-gray-600">Subtotal</Text>
               <Text className="text-gray-800">
-                ${orderData.totalAmount - 50}
+                ₹{orderData.totalAmount - 50}
               </Text>
             </View>
             <View className="flex-row justify-between mb-1">
               <Text className="text-gray-600">Insurance Fee</Text>
-              <Text className="text-gray-800">$50</Text>
+              <Text className="text-gray-800">₹50</Text>
             </View>
             <View className="flex-row justify-between mt-2 pt-2 border-t border-gray-200">
               <Text className="font-semibold">Total</Text>
-              <Text className="font-bold">${orderData.totalAmount}</Text>
+              <Text className="font-bold">₹{orderData.totalAmount}</Text>
             </View>
           </View>
         </View>

@@ -34,7 +34,10 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={DefaultTheme}>
+    <ThemeProvider
+      value={DefaultTheme}
+      className="bg-[#NaNNaNNaN] bg-[#NaNNaNNaN]"
+    >
       <Stack
         screenOptions={({ route }) => ({
           headerShown: !route.name.startsWith("tempobook"),
@@ -46,6 +49,14 @@ export default function RootLayout() {
         <Stack.Screen name="customers/index" options={{ headerShown: false }} />
         <Stack.Screen name="events/index" options={{ headerShown: false }} />
         <Stack.Screen name="finances/index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="finances/invoice-details"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="finances/transaction-details"
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="finances/add-expense"
           options={{ headerShown: false }}

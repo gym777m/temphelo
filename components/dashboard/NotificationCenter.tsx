@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { router } from "expo-router";
 import {
   Bell,
   AlertCircle,
@@ -17,6 +18,7 @@ interface Notification {
   message: string;
   time: string;
   read: boolean;
+  route?: string;
 }
 
 interface NotificationCenterProps {
@@ -34,6 +36,7 @@ const NotificationCenter = ({
       message: "Camera equipment for John Doe is 2 days overdue",
       time: "2h ago",
       read: false,
+      route: "/orders/view?id=3",
     },
     {
       id: "2",
@@ -42,6 +45,7 @@ const NotificationCenter = ({
       message: "Wedding photoshoot at Sunset Gardens",
       time: "3h ago",
       read: false,
+      route: "/events/view?id=1",
     },
     {
       id: "3",
@@ -50,10 +54,20 @@ const NotificationCenter = ({
       message: "Invoice #1234 has been paid in full",
       time: "5h ago",
       read: true,
+      route: "/finances/invoice-details?id=1",
     },
   ],
-  onNotificationPress = () => {},
-  onViewAllPress = () => {},
+  onNotificationPress = (notification) => {
+    // If notification has a route, navigate to it directly
+    if (notification.route) {
+      router.push(notification.route);
+    } else {
+      router.push(`/notifications`);
+    }
+  },
+  onViewAllPress = () => {
+    router.push(`/notifications`);
+  },
 }: NotificationCenterProps) => {
   const getIconForType = (type: NotificationType) => {
     switch (type) {

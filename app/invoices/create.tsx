@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
+  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -111,7 +112,29 @@ export default function CreateInvoiceScreen() {
     }
   };
 
+  const validateForm = () => {
+    if (!customerName.trim()) {
+      Alert.alert("Error", "Please enter customer name");
+      return false;
+    }
+    if (!dueDate.trim()) {
+      Alert.alert("Error", "Please enter due date");
+      return false;
+    }
+
+    // Check if any item is missing a description
+    const invalidItem = items.find((item) => !item.description.trim());
+    if (invalidItem) {
+      Alert.alert("Error", "Please enter a description for all items");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleCreateInvoice = () => {
+    if (!validateForm()) return;
+
     // In a real app, you would save the invoice to the database
     console.log("Creating invoice", {
       customerName,
@@ -122,7 +145,10 @@ export default function CreateInvoiceScreen() {
       items,
       total: calculateTotal(),
     });
-    router.push("/invoices");
+
+    Alert.alert("Success", "Invoice created successfully", [
+      { text: "OK", onPress: () => router.push("/invoices") },
+    ]);
   };
 
   return (
@@ -246,7 +272,7 @@ export default function CreateInvoiceScreen() {
                 </View>
 
                 <View className="w-1/3 px-1">
-                  <Text className="text-gray-700 mb-1">Unit Price ($)</Text>
+                  <Text className="text-gray-700 mb-1">Unit Price (₹)</Text>
                   <TextInput
                     className="border border-gray-300 rounded-lg p-2"
                     placeholder="0.00"
@@ -262,7 +288,7 @@ export default function CreateInvoiceScreen() {
                   <Text className="text-gray-700 mb-1">Total</Text>
                   <View className="border border-gray-300 rounded-lg p-2 bg-gray-50">
                     <Text className="text-gray-800">
-                      ${item.total.toFixed(2)}
+                      ₹{item.total.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -275,13 +301,13 @@ export default function CreateInvoiceScreen() {
               <View className="flex-row justify-between py-2">
                 <Text className="font-medium text-gray-700">Subtotal:</Text>
                 <Text className="font-medium text-gray-900">
-                  ${calculateTotal().toFixed(2)}
+                  ₹{calculateTotal().toFixed(2)}
                 </Text>
               </View>
               <View className="flex-row justify-between py-2 border-t border-gray-200">
                 <Text className="font-bold text-gray-800">Total:</Text>
                 <Text className="font-bold text-gray-900">
-                  ${calculateTotal().toFixed(2)}
+                  ₹{calculateTotal().toFixed(2)}
                 </Text>
               </View>
             </View>

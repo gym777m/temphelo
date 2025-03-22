@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 import {
   PlusCircle,
   Search,
@@ -96,7 +97,7 @@ export default function ProductsScreen() {
     return (
       <TouchableOpacity
         className="bg-white p-4 rounded-lg mb-3 shadow-sm border border-gray-100"
-        onPress={() => console.log(`View product ${item.id}`)}
+        onPress={() => router.push(`/products/view?id=${item.id}`)}
       >
         <View className="flex-row justify-between">
           <Image
@@ -124,13 +125,13 @@ export default function ProductsScreen() {
               <View className="flex-row items-center mr-4">
                 <Tag size={14} color="#6B7280" />
                 <Text className="text-gray-700 text-sm ml-1">
-                  ${item.rentalPrice}/day
+                  ₹{item.rentalPrice}/day
                 </Text>
               </View>
               <View className="flex-row items-center">
                 <Clock size={14} color="#6B7280" />
                 <Text className="text-gray-700 text-sm ml-1">
-                  ${item.deposit} deposit
+                  ₹{item.deposit} deposit
                 </Text>
               </View>
             </View>
@@ -154,7 +155,10 @@ export default function ProductsScreen() {
               <SlidersHorizontal size={20} color="#6366f1" strokeWidth={2} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 rounded-xl flex-row items-center shadow-md">
+          <TouchableOpacity
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 rounded-xl flex-row items-center shadow-md"
+            onPress={() => router.push("/products/add")}
+          >
             <PlusCircle size={18} color="#FFFFFF" />
             <Text className="text-white font-medium ml-2">Add Product</Text>
           </TouchableOpacity>

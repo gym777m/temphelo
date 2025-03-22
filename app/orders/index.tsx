@@ -224,8 +224,7 @@ export default function OrdersScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       <Header title="Rental Orders" />
-
-      <View className="flex-1 px-4 pt-4">
+      <View className="flex-1 px-4 pt-4 shrink">
         <View className="flex-row justify-between items-center mb-4">
           {showSearch ? (
             <View className="flex-1 flex-row items-center bg-white rounded-lg p-2 mr-2">
@@ -272,7 +271,7 @@ export default function OrdersScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          className="mb-4"
+          className="mb-4 shrink-0 grow-0"
         >
           {["All", "Active", "Pending Return", "Returned", "Overdue"].map(
             (status) => (
@@ -299,7 +298,6 @@ export default function OrdersScreen() {
           contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}
         />
       </View>
-
       <View className="absolute bottom-0 left-0 right-0">
         <BottomNavigation activeTab="orders" />
       </View>
